@@ -1,5 +1,3 @@
-import yfinance as yf
-
 # Constants
 UP = 1
 SIDE = 0
@@ -9,7 +7,7 @@ DOWN = -1
 def trend_type(data):
     """
     Determines the trend type by direction of slope of 50 day moving average line
-    Also returns the confidence in days for which the slope was consistent
+    Also returns the confidence in days for which the trend type was consistent
 
     :Parameters:
         data: A Ticker's history object
@@ -36,7 +34,3 @@ def trend_type(data):
         else:
             trend_type = SIDE
     return trend_type, conf_in_trend
-
-
-# data = yf.Ticker('TRENT.NS').history(period='1y')
-# trend_type(data)
