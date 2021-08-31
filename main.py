@@ -6,6 +6,7 @@ import candlestick
 # https://www.nseindia.com/products-services/indices-nifty200-index
 # Sample is top 5 rows of the above file
 nifty_200 = pd.read_csv('ind_nifty200list_sample.csv')
+nifty_200 = pd.read_csv('ind_nifty200list.csv')
 signals = dict()
 keys = [
     'trend_type',
@@ -14,11 +15,15 @@ keys = [
     'bearish_belt_hold',
     'hammer',
     'hanging_man',
+    'inverted_hammer',
+    'shooting_star',
 ]
 for key in keys:
     signals[key] = []
 
-for symbol in nifty_200['Symbol']:
+for i, symbol in enumerate(nifty_200['Symbol']):
+    print(f'{i/len(nifty_200)*100:.2f}% completed...')
+
     stock_data = yf.Ticker(f'{symbol}.NS').history(period='1y')
     last_candle = stock_data.iloc[-1]
 
@@ -41,7 +46,17 @@ for symbol in nifty_200['Symbol']:
         trend_type == trend.UP and \
         candlestick.is_hammer_or_hanging_man(last_candle)
     )
+    
+    signals['inverted_hammer'].append(
+        trend_type == trend.DOWN and \
+        candlestick.is_inverted_hammer_or_shooting_star(last_candle)
+    )
+    signals['shooting_star'].append(
+        trend_type == trend.UP and \
+        candlestick.is_inverted_hammer_or_shooting_star(last_candle)
+    )
 
+print('100.00% Completed...')
 for key in keys:
     nifty_200[key] = pd.Series(signals[key])
 nifty_200['Link'] = 'https://finance.yahoo.com/chart/' + nifty_200['Symbol'] + '.NS'
