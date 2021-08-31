@@ -14,7 +14,7 @@ def are_close(val1, val2):
     return abs(val2 / val1 - 1) <= CLOSE_THRESHOLD
 
 
-def bullish_belt_hold(candle):
+def is_bullish_belt_hold(candle):
     """
     Determines whether the candle is a bullish belt hold candlestick pattern
 
@@ -26,3 +26,17 @@ def bullish_belt_hold(candle):
     """
 
     return are_close(candle['Open'], candle['Low'])
+
+
+def is_bearish_belt_hold(candle):
+    """
+    Determines whether the candle is a bearish belt hold candlestick pattern
+
+    :Parameters:
+        candle: Series object containing candle data
+
+    :Returns:
+        Boolean whether the candle is a bearish belt hold or not
+    """
+
+    return are_close(candle['Open'], candle['High'])

@@ -2,6 +2,11 @@
 UP = 1
 SIDE = 0
 DOWN = -1
+CONST_TO_STR = {
+    UP: 'Up',
+    DOWN: 'Down',
+    SIDE: 'Side',
+}
 
 
 def trend_type(data):
