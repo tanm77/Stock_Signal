@@ -46,7 +46,7 @@ def has_short_lower_shadow(candle):
         min(candle['Open'], candle['Close']))
 
 
-def has_long_lower_shadow(candle):
+def has_long_lower_shadow(candle, factor=1):
     """
     Determines whether the candle has a long lower shadow
 
@@ -57,11 +57,11 @@ def has_long_lower_shadow(candle):
         Boolean whether the candle the candle has a long lower shadow or not
     """
 
-    return abs(candle['Open'] - candle['Close']) < \
+    return factor * abs(candle['Open'] - candle['Close']) < \
         min(candle['Open'], candle['Close']) - candle['Low']
 
 
-def has_long_upper_shadow(candle):
+def has_long_upper_shadow(candle, factor=1):
     """
     Determines whether the candle has a long upper shadow
 
@@ -72,7 +72,7 @@ def has_long_upper_shadow(candle):
         Boolean whether the candle the candle has a long upper shadow or not
     """
 
-    return abs(candle['Open'] - candle['Close']) < \
+    return factor * abs(candle['Open'] - candle['Close']) < \
         candle['High'] - max(candle['Open'], candle['Close'])
 
 
@@ -132,3 +132,47 @@ def is_inverted_hammer_or_shooting_star(candle):
 
     return has_short_lower_shadow(candle) and \
         has_long_upper_shadow(candle)
+
+
+def is_doji(candle):
+    """
+    Determines whether the candle is a doji candlestick pattern
+
+    :Parameters:
+        candle: Series object containing candle data
+
+    :Returns:
+        Boolean whether the candle is a doji or not
+    """
+
+    return are_close(candle['Open'], candle['Close'])
+
+
+def is_gravestone_doji(candle):
+    """
+    Determines whether the candle is a gravestone doji candlestick pattern
+
+    :Parameters:
+        candle: Series object containing candle data
+
+    :Returns:
+        Boolean whether the candle is a gravestone doji or not
+    """
+
+    return is_doji(candle) and has_short_lower_shadow(candle)
+
+
+def is_long_legged_doji(candle):
+    """
+    Determines whether the candle is a long legged doji candlestick pattern
+
+    :Parameters:
+        candle: Series object containing candle data
+
+    :Returns:
+        Boolean whether the candle is a long legged doji or not
+    """
+
+    return is_doji(candle) and \
+        has_long_lower_shadow(candle, factor=10) and \
+        has_long_upper_shadow(candle, factor=10)
