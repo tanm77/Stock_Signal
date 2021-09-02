@@ -174,5 +174,5 @@ def is_long_legged_doji(candle):
     """
 
     return is_doji(candle) and \
-        has_long_lower_shadow(candle, factor=10) and \
-        has_long_upper_shadow(candle, factor=10)
+        has_long_lower_shadow(candle, factor=50) and \
+        has_long_upper_shadow(candle, factor=50)
